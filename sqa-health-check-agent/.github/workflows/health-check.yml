@@ -1,0 +1,66 @@
+name: Daily System Health Check
+
+on:
+  # Runs every day at 04:00 UTC = 9:00 AM Pakistan Time (UTC+5),
+  # giving a buffer to finish well before the 9:30-10:00 AM deadline.
+  # Adjust the "hour" number if your timezone or deadline changes.
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch: {}   # lets you also trigger it manually anytime
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    name: Check all systems and publish dashboard
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Build the health check agent
+        run: mvn -q clean package -DskipTests
+
+      - name: Run health checks
+        env:
+          BLOODDONORS_USERNAME: ${{ secrets.BLOODDONORS_USERNAME }}
+          BLOODDONORS_PASSWORD: ${{ secrets.BLOODDONORS_PASSWORD }}
+        run: java -jar target/sqa-health-check-agent.jar
+        continue-on-error: true   # so the dashboard still publishes even if some systems are DOWN
+
+      - name: Upload dashboard as build artifact (backup/history)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-check-dashboard
+          path: docs/index.html
+          retention-days: 30
+
+      - name: Setup GitHub Pages
+        if: always()
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        if: always()
+        id: deployment
+        uses: actions/deploy-pages@v4

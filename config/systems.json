@@ -1,34 +1,13 @@
 {
   "systems": [
     {
-      "name": "Case Management Portal",
-      "url": "https://example-crm.yourcompany.com/login",
-      "usernameLocator": "id:username",
-      "passwordLocator": "id:password",
-      "submitLocator": "id:loginBtn",
-      "successLocator": "id:dashboardHeader",
-      "usernameEnvVar": "CRM_USERNAME",
-      "passwordEnvVar": "CRM_PASSWORD"
-    },
-    {
-      "name": "HR Attendance System",
-      "url": "https://example-hr.yourcompany.com/login",
-      "usernameLocator": "name:email",
-      "passwordLocator": "name:pwd",
-      "submitLocator": "css:button[type='submit']",
-      "successLocator": "xpath://div[@class='home-welcome']",
-      "usernameEnvVar": "HR_USERNAME",
-      "passwordEnvVar": "HR_PASSWORD"
-    },
-    {
-      "name": "Finance Reporting Tool",
-      "url": "https://example-finance.yourcompany.com/signin",
-      "usernameLocator": "id:userEmail",
-      "passwordLocator": "id:userPassword",
-      "submitLocator": "id:signInButton",
-      "successLocator": "id:reportsMenu",
-      "usernameEnvVar": "FINANCE_USERNAME",
-      "passwordEnvVar": "FINANCE_PASSWORD"
-    }
+  "name": "Blood Donors Portal",
+  "url": "https://blooddonors.psca.gop.pk/login",
+  "usernameLocator": "id:username",
+  "passwordLocator": "id:password",
+  "submitLocator": "id:loginSubmitBtn",
+  "successLocator": "id:header-title",
+  "usernameEnvVar": "BLOODDONORS_USERNAME",
+  "passwordEnvVar": "BLOODDONORS_PASSWORD" }
   ]
 }
