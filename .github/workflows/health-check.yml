@@ -36,6 +36,8 @@ jobs:
         env:
           BLOODDONORS_USERNAME: ${{ secrets.BLOODDONORS_USERNAME }}
           BLOODDONORS_PASSWORD: ${{ secrets.BLOODDONORS_PASSWORD }}
+          VCCS_USERNAME: ${{ secrets.VCCS_USERNAME }}
+          VCCS_PASSWORD: ${{ secrets.VCCS_PASSWORD }}
         run: java -jar target/sqa-health-check-agent.jar
         continue-on-error: true
 
