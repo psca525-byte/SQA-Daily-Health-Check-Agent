@@ -1,13 +1,22 @@
 {
   "systems": [
     {
-  "name": "VIRTUAL BLOOD BANK",
+  "name": "VIRTUAL BLOOD BANK - VBB",
   "url": "https://blooddonors.psca.gop.pk/login",
   "usernameLocator": "id:username",
   "passwordLocator": "id:password",
   "submitLocator": "id:loginSubmitBtn",
   "successLocator": "id:header-title",
   "usernameEnvVar": "BLOODDONORS_USERNAME",
-  "passwordEnvVar": "BLOODDONORS_PASSWORD" }
+  "passwordEnvVar": "BLOODDONORS_PASSWORD" },
+    {
+  "name": "VIRTUAL CENTER FOR CHILDERN SAFTEY - VCCS",
+  "url": "https://vccs.psca.gop.pk/",
+  "usernameLocator": "id="email",
+  "passwordLocator": "id="password",
+  "submitLocator": "id="signInBtn",
+  "successLocator": "id:header-title",
+  "usernameEnvVar": "VCCS_USERNAME",
+  "passwordEnvVar": "VCCS_PASSWORD" }
   ]
 }
