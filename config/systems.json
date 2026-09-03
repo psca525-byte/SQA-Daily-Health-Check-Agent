@@ -1,7 +1,7 @@
 {
   "systems": [
     {
-  "name": "Blood Donors Portal",
+  "name": "VIRTUAL BLOOD BANK",
   "url": "https://blooddonors.psca.gop.pk/login",
   "usernameLocator": "id:username",
   "passwordLocator": "id:password",
