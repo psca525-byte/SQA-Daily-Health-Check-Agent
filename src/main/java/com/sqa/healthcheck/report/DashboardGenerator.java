@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -18,11 +19,19 @@ import java.util.List;
 public class DashboardGenerator {
 
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a");
+    // GitHub Actions runs on UTC servers - convert to Pakistan Standard Time (UTC+5) for display
+    private static final ZoneId PAKISTAN_ZONE = ZoneId.of("Asia/Karachi");
+
+    private String toPakistanTime(java.time.LocalDateTime utcTime) {
+        return utcTime.atZone(ZoneId.of("UTC"))
+                .withZoneSameInstant(PAKISTAN_ZONE)
+                .format(TIME_FORMAT);
+    }
 
     public void generate(List<CheckResult> results, String outputPath) throws IOException {
         long upCount = results.stream().filter(r -> r.status == CheckResult.Status.UP).count();
         long downCount = results.size() - upCount;
-        String generatedAt = java.time.LocalDateTime.now().format(TIME_FORMAT);
+        String generatedAt = toPakistanTime(java.time.LocalDateTime.now());
 
         StringBuilder rows = new StringBuilder();
         for (CheckResult r : results) {
@@ -33,7 +42,7 @@ public class DashboardGenerator {
                     .append(isUp ? "UP" : "DOWN").append("</span></td>")
                     .append("<td>").append(r.responseTimeMillis).append(" ms</td>")
                     .append("<td>").append(isUp ? "-" : escape(r.failureReason)).append("</td>")
-                    .append("<td>").append(r.checkedAt.format(TIME_FORMAT)).append("</td>")
+                    .append("<td>").append(toPakistanTime(r.checkedAt)).append("</td>")
                     .append("</tr>\n");
         }
 
