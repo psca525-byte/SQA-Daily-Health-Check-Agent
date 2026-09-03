@@ -54,7 +54,7 @@ public class DashboardGenerator {
                   .card.up .num { color: #16a34a; }
                   .card.down .num { color: #dc2626; }
                   .card .label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.04em; }
-                  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+                  table { width: 100%%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
                   th, td { padding: 12px 16px; text-align: left; font-size: 13px; border-bottom: 1px solid #eee; }
                   th { background: #fafafa; font-weight: 600; color: #444; text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
                   tr:last-child td { border-bottom: none; }
