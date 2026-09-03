@@ -1,12 +1,9 @@
 name: Daily System Health Check
 
 on:
-  # Runs every day at 04:00 UTC = 9:00 AM Pakistan Time (UTC+5),
-  # giving a buffer to finish well before the 9:30-10:00 AM deadline.
-  # Adjust the "hour" number if your timezone or deadline changes.
   schedule:
     - cron: '0 4 * * *'
-  workflow_dispatch: {}   # lets you also trigger it manually anytime
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -40,9 +37,9 @@ jobs:
           BLOODDONORS_USERNAME: ${{ secrets.BLOODDONORS_USERNAME }}
           BLOODDONORS_PASSWORD: ${{ secrets.BLOODDONORS_PASSWORD }}
         run: java -jar target/sqa-health-check-agent.jar
-        continue-on-error: true   # so the dashboard still publishes even if some systems are DOWN
+        continue-on-error: true
 
-      - name: Upload dashboard as build artifact (backup/history)
+      - name: Upload dashboard as build artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
