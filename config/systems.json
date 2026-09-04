@@ -29,6 +29,16 @@
       "successLocator": "id:Negative-Feedbacks",
       "usernameEnvVar": "VCCS_USERNAME",
       "passwordEnvVar": "VCCS_PASSWORD"
+    },
+    {
+      "name": "Virtual Center for Narcotics Control - VCNC",
+      "url": "https://vcnc.psca.gop.pk/login",
+      "usernameLocator": "id:email",
+      "passwordLocator": "id:password",
+      "submitLocator": "id:signInBtn",
+      "successLocator": "id:new-case",
+      "usernameEnvVar": "VCCS_USERNAME",
+      "passwordEnvVar": "VCCS_PASSWORD"
     }
   ]
 }
