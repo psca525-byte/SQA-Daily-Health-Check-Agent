@@ -11,8 +11,8 @@
   "passwordEnvVar": "BLOODDONORS_PASSWORD" },
     {
   "name": "VIRTUAL CENTER FOR CHILDERN SAFTEY - VCCS",
-  "url": "https://vccs.psca.gop.pk/",
-  "usernameLocator": "id:email",
+  "url": "https://vccs.psca.gop.pk/login",
+  "emailLocator": "id:email",
   "passwordLocator": "id:password",
   "submitLocator": "id:signInBtn",
   "successLocator": "id:header-title",
