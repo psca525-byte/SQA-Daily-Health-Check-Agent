@@ -49,6 +49,16 @@
       "successLocator": "id:Negative-Feedbacks",
       "usernameEnvVar": "VCCS_USERNAME",
       "passwordEnvVar": "VCCS_PASSWORD"
+    },
+    {
+      "name": "Virtual Women Police Station - VWPS",
+      "url": "https://vwps.psca.gop.pk/login",
+      "usernameLocator": "id:email",
+      "passwordLocator": "id:password",
+      "submitLocator": "id:signInBtn",
+      "successLocator": "id:new-case",
+      "usernameEnvVar": "VCCS_USERNAME",
+      "passwordEnvVar": "VCCS_PASSWORD"
     }
   ]
 }
