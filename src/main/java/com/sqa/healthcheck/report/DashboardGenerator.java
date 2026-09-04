@@ -36,12 +36,20 @@ public class DashboardGenerator {
         StringBuilder rows = new StringBuilder();
         for (CheckResult r : results) {
             boolean isUp = r.status == CheckResult.Status.UP;
+            String screenshotCell = "";
+            if (r.screenshotBase64 != null && !r.screenshotBase64.isBlank()) {
+                screenshotCell = "<td><img src=\"data:image/png;base64," + r.screenshotBase64 + "\" alt=\"Screenshot\" class=\"screenshot\" onclick=\"expandImage(this)\"></td>";
+            } else {
+                screenshotCell = "<td class=\"no-screenshot\">-</td>";
+            }
+            
             rows.append("<tr>")
                     .append("<td>").append(escape(r.name)).append("</td>")
                     .append("<td><span class=\"badge ").append(isUp ? "badge-up" : "badge-down").append("\">")
                     .append(isUp ? "UP" : "DOWN").append("</span></td>")
                     .append("<td>").append(r.responseTimeMillis).append(" ms</td>")
                     .append("<td>").append(isUp ? "-" : escape(r.failureReason)).append("</td>")
+                    .append(screenshotCell)
                     .append("<td>").append(toPakistanTime(r.checkedAt)).append("</td>")
                     .append("</tr>\n");
         }
@@ -54,7 +62,7 @@ public class DashboardGenerator {
                 <title>System Health Check Dashboard</title>
                 <style>
                   body { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: #f5f6f8; margin: 0; padding: 32px; color: #1a1a1a; }
-                  .container { max-width: 960px; margin: 0 auto; }
+                  .container { max-width: 1200px; margin: 0 auto; }
                   h1 { font-size: 22px; margin-bottom: 4px; }
                   .subtitle { color: #666; font-size: 13px; margin-bottom: 24px; }
                   .summary { display: flex; gap: 16px; margin-bottom: 24px; }
@@ -70,6 +78,14 @@ public class DashboardGenerator {
                   .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.03em; }
                   .badge-up { background: #dcfce7; color: #15803d; }
                   .badge-down { background: #fee2e2; color: #b91c1c; }
+                  .screenshot { max-width: 120px; max-height: 80px; border-radius: 4px; cursor: pointer; border: 1px solid #ddd; }
+                  .screenshot:hover { border-color: #999; }
+                  .no-screenshot { color: #999; }
+                  .modal { display: none; position: fixed; top: 0; left: 0; width: 100%%; height: 100%%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; }
+                  .modal.active { display: flex; }
+                  .modal-content { background: white; padding: 20px; border-radius: 8px; max-width: 90%%; max-height: 90%%; overflow: auto; }
+                  .modal-content img { max-width: 100%%; height: auto; }
+                  .close-btn { position: absolute; top: 10px; right: 20px; font-size: 28px; font-weight: bold; cursor: pointer; color: white; }
                   footer { margin-top: 20px; font-size: 12px; color: #999; text-align: center; }
                 </style>
                 </head>
@@ -91,6 +107,7 @@ public class DashboardGenerator {
                         <th>Status</th>
                         <th>Response Time</th>
                         <th>Failure Reason</th>
+                        <th>Screenshot</th>
                         <th>Checked At</th>
                       </tr>
                     </thead>
@@ -101,6 +118,26 @@ public class DashboardGenerator {
 
                   <footer>Generated automatically by the SQA Health Check Agent</footer>
                 </div>
+
+                <div id="imageModal" class="modal" onclick="closeModal(event)">
+                  <span class="close-btn" onclick="closeModal()">&times;</span>
+                  <div class="modal-content" onclick="event.stopPropagation()">
+                    <img id="modalImage" src="" alt="Full Screenshot">
+                  </div>
+                </div>
+
+                <script>
+                  function expandImage(img) {
+                    const modal = document.getElementById('imageModal');
+                    const modalImg = document.getElementById('modalImage');
+                    modalImg.src = img.src;
+                    modal.classList.add('active');
+                  }
+                  function closeModal(event) {
+                    const modal = document.getElementById('imageModal');
+                    modal.classList.remove('active');
+                  }
+                </script>
                 </body>
                 </html>
                 """.formatted(generatedAt, upCount, downCount, results.size(), rows);
