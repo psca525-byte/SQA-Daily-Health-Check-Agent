@@ -8,6 +8,8 @@ package com.sqa.healthcheck.model;
 public class SystemConfig {
     public String name;
     public String url;
+    public String checkType;              // ADD THIS - "PING" or null for full login
+    public String pageLoadedLocator;      // ADD THIS - locator for PING mode verification
     public String usernameLocator;
     public String passwordLocator;
     public String submitLocator;
