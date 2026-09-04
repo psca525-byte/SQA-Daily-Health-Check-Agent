@@ -62,7 +62,7 @@
     },
     {
       "name": "Morning Brief - Central Dashboard",
-      "url": "https://centraldashboard.psca.gop.pk/Identity/Account/Login?ReturnUrl=%2FMorningBrief%2FIndex",
+      "url": "https://centraldashboard.psca.gop.pk/Identity/Account/Login",
       "usernameLocator": "id:Input_UserName",
       "passwordLocator": "id:Input_Password",
       "submitLocator": "id:login-submit",
