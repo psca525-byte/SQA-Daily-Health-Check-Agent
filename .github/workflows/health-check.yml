@@ -38,6 +38,8 @@ jobs:
           BLOODDONORS_PASSWORD: ${{ secrets.BLOODDONORS_PASSWORD }}
           VCCS_USERNAME: ${{ secrets.VCCS_USERNAME }}
           VCCS_PASSWORD: ${{ secrets.VCCS_PASSWORD }}
+          MB_USERNAME: ${{ secrets.MB_USERNAME }}
+          MB_PASSWORD: ${{ secrets.MB_PASSWORD }}
         run: java -jar target/sqa-health-check-agent.jar
         continue-on-error: true
 
