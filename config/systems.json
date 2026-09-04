@@ -19,7 +19,7 @@
       "successLocator": "id:custom-slogan",
       "usernameEnvVar": "VCCS_USERNAME",
       "passwordEnvVar": "VCCS_PASSWORD"
-    }
+    },
     {
       "name": "Virtual Center for Minorities Dashboard - VCM",
       "url": "https://vcm.psca.gop.pk/login",
