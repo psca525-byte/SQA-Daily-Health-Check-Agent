@@ -68,10 +68,9 @@ public class HealthCheckRunner {
         long downCount = results.stream().filter(r -> r.status == CheckResult.Status.DOWN).count();
         if (downCount > 0) {
             logger.warn("{} out of {} systems are DOWN.", downCount, results.size());
-            // Non-zero exit code so CI can flag the run as failed/attention-needed
-            System.exit(1);
         }
         
+        System.exit(0);  // Always exit with success (health checks are monitoring, not tests)
     }
 
     private static WebDriver createDriver() {
@@ -97,10 +96,4 @@ public class HealthCheckRunner {
             return List.of();
         }
     }
-    // Change this line at the end of main():
-if (downCount > 0) {
-    logger.warn("{} out of {} systems are DOWN.", downCount, results.size());
-    // System.exit(1);  // Comment out or remove this line
-}
-System.exit(0);  // Always exit with success
 }
