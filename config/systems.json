@@ -15,7 +15,7 @@
   "emailLocator": "id:email",
   "passwordLocator": "id:password",
   "submitLocator": "id:signInBtn",
-  "successLocator": "id:header-title",
+  "successLocator": "id:custom-slogan",
   "usernameEnvVar": "VCCS_USERNAME",
   "passwordEnvVar": "VCCS_PASSWORD" }
   ]
