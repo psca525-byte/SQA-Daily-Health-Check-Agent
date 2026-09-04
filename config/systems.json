@@ -70,5 +70,6 @@
       "usernameEnvVar": "MB_USERNAME",
       "passwordEnvVar": "MB_PASSWORD"
     }
+    
   ]
 }
