@@ -39,6 +39,16 @@
       "successLocator": "id:new-case",
       "usernameEnvVar": "VCCS_USERNAME",
       "passwordEnvVar": "VCCS_PASSWORD"
+    },
+    {
+      "name": "Virtual Traffic Management System - VTMS",
+      "url": "https://vtms.psca.gop.pk/login",
+      "usernameLocator": "id:email",
+      "passwordLocator": "id:password",
+      "submitLocator": "id:signInBtn",
+      "successLocator": "id:Negative-Feedbacks",
+      "usernameEnvVar": "VCCS_USERNAME",
+      "passwordEnvVar": "VCCS_PASSWORD"
     }
   ]
 }
