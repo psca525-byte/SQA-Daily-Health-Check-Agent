@@ -59,6 +59,16 @@
       "successLocator": "id:new-case",
       "usernameEnvVar": "VCCS_USERNAME",
       "passwordEnvVar": "VCCS_PASSWORD"
+    },
+    {
+      "name": "Morning Brief - Central Dashboard",
+      "url": "https://centraldashboard.psca.gop.pk/Identity/Account/Login?ReturnUrl=%2FMorningBrief%2FIndex",
+      "usernameLocator": "id:Input_UserName",
+      "passwordLocator": "id:Input_Password",
+      "submitLocator": "id:login-submit",
+      "successLocator": "id:pageTitle",
+      "usernameEnvVar": "MB_USERNAME",
+      "passwordEnvVar": "MB_PASSWORD"
     }
   ]
 }
