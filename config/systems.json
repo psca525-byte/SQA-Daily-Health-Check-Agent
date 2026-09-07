@@ -69,7 +69,14 @@
       "successLocator": "id:pageTitle",
       "usernameEnvVar": "MB_USERNAME",
       "passwordEnvVar": "MB_PASSWORD"
-    }
+    },
+    {
+  "name": "PSCA Official Website",
+  "url": "https://psca.gop.pk/",
+  "checkType": "PING",
+  "popupCloseLocator": "css:button.off-canvas-close",
+  "pageLoadedLocator": "css:img[alt='Punjab Safe Cities Authority Logo']"
+  }
     
   ]
 }
