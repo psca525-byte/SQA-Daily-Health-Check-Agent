@@ -16,11 +16,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.Base64;
 
-/**
- * Performs one system's health check: open URL -> log in -> verify a
- * post-login element appears. Records timing and a specific failure
- * reason so the dashboard can tell testers exactly what stage failed.
- */
 public class SystemChecker {
 
     private static final Logger logger = LogManager.getLogger(SystemChecker.class);
@@ -40,6 +35,10 @@ public class SystemChecker {
         try {
             driver.get(config.url);
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS));
+
+            if (config.popupCloseLocator != null && !config.popupCloseLocator.isBlank()) {
+                closePopupIfPresent(driver, config.popupCloseLocator);
+            }
 
             if (config.pageLoadedLocator == null || config.pageLoadedLocator.isBlank()) {
                 throw new CheckFailedException(
@@ -129,6 +128,18 @@ public class SystemChecker {
         }
 
         return result;
+    }
+
+    private void closePopupIfPresent(WebDriver driver, String popupCloseLocator) {
+        try {
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(8));
+            By by = LocatorParser.parse(popupCloseLocator);
+            WebElement closeButton = shortWait.until(ExpectedConditions.elementToBeClickable(by));
+            closeButton.click();
+            logger.info("Popup closed successfully");
+        } catch (Exception e) {
+            logger.info("No popup found to close (or it didn't appear in time) - continuing");
+        }
     }
 
     private String captureScreenshot(WebDriver driver) {
