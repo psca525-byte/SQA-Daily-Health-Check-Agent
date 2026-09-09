@@ -60,14 +60,23 @@
       "usernameEnvVar": "VCCS_USERNAME",
       "passwordEnvVar": "VCCS_PASSWORD"
     },
-  
     {
   "name": "PSCA Official Website",
   "url": "https://psca.gop.pk/",
   "checkType": "PING",
   "popupCloseLocator": "css:button.off-canvas-close",
   "pageLoadedLocator": "css:img[alt='Punjab Safe Cities Authority Logo']"
-  }
+  },
+    {
+      "name": "Public Safety Portal",
+      "url": "https://publicsafety.psca.gop.pk/Auth/Login",
+      "usernameLocator": "id:loginName",
+      "passwordLocator": "id:loginPassword",
+      "submitLocator": "class:login-btn-submit",
+      "successLocator": "id:nav-theme",
+      "usernameEnvVar": "PSP_USERNAME",
+      "passwordEnvVar": "PSP_PASSWORD"
+    },
     
   ]
 }
