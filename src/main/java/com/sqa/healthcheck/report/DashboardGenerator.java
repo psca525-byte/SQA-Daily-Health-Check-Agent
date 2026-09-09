@@ -83,7 +83,7 @@ public class DashboardGenerator {
                   .card .label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.04em; }
                   table { width: 100%%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
                   th, td { padding: 12px 16px; text-align: left; font-size: 13px; border-bottom: 1px solid #eee; }
-                  th { background: #fafafa; font-weight: 600; color: #444; text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
+                  th { background: #fafafa; font-weight: 700; color: #444; text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
                   tr:last-child td { border-bottom: none; }
                   .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.03em; }
                   .badge-up { background: #dcfce7; color: #15803d; }
@@ -130,7 +130,7 @@ public class DashboardGenerator {
                       <span class="perf perf-slow" style="margin-left:10px;">\uD83D\uDFE1 Slow (10\u201320s)</span>
                       <span class="perf perf-critical" style="margin-left:10px;">\uD83D\uDD34 Critical (over 20s)</span>
                     </div>
-                    Generated automatically by the SQA Health Check Agent
+                    Generated automatically by the SQA Teams Health Check Agent
                   </footer>
                 </div>
                 </body>
