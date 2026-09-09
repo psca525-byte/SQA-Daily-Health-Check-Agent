@@ -30,9 +30,6 @@ private String getPerformanceBadge(long responseTimeMillis) {
         return "<span class=\"perf perf-critical\">\uD83D\uDD34 Critical</span>";
     }
 }
-   
-    }
-
     public void generate(List<CheckResult> results, String outputPath) throws IOException {
         long upCount = results.stream().filter(r -> r.status == CheckResult.Status.UP).count();
         long downCount = results.size() - upCount;
@@ -128,8 +125,8 @@ private String getPerformanceBadge(long responseTimeMillis) {
                     <div style="margin-bottom: 6px;">
                       Performance criteria based on response time:
                    <span class="perf perf-healthy" style="margin-left:6px;">\uD83D\uDFE2 Healthy (under 15s)</span>
-<span class="perf perf-slow" style="margin-left:10px;">\uD83D\uDFE1 Slow (15\u201335s)</span>
-<span class="perf perf-critical" style="margin-left:10px;">\uD83D\uDD34 Critical (over 35s)</span>
+                    <span class="perf perf-slow" style="margin-left:10px;">\uD83D\uDFE1 Slow (15\u201335s)</span>
+                    <span class="perf perf-critical" style="margin-left:10px;">\uD83D\uDD34 Critical (over 35s)</span>
                     </div>
                     Generated automatically by the SQA Teams Health Check Agent
                   </footer>
