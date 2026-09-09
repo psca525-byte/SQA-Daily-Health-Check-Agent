@@ -123,7 +123,15 @@ public class DashboardGenerator {
                     </tbody>
                   </table>
 
-                  <footer>Generated automatically by the SQA Health Check Agent</footer>
+                  <footer>
+                    <div style="margin-bottom: 6px;">
+                      Performance criteria based on response time:
+                      <span class="perf perf-healthy" style="margin-left:6px;">\uD83D\uDFE2 Healthy (under 10s)</span>
+                      <span class="perf perf-slow" style="margin-left:10px;">\uD83D\uDFE1 Slow (10\u201320s)</span>
+                      <span class="perf perf-critical" style="margin-left:10px;">\uD83D\uDD34 Critical (over 20s)</span>
+                    </div>
+                    Generated automatically by the SQA Health Check Agent
+                  </footer>
                 </div>
                 </body>
                 </html>
