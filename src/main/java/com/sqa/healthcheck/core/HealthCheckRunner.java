@@ -72,15 +72,19 @@ public class HealthCheckRunner {
         
         System.exit(0);  // Always exit with success (health checks are monitoring, not tests)
     }
-
     private static WebDriver createDriver() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--window-size=1920,1080");
-        return new ChromeDriver(options);
-    }
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--headless=new");
+    options.addArguments("--no-sandbox");
+    options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--window-size=1920,1080");
+    WebDriver driver = new ChromeDriver(options);
+    // Hard cap matching dev-agreed max response time (50s) - prevents
+    // a single hanging page from blocking the whole daily run
+    driver.manage().timeouts().pageLoadTimeout(java.time.Duration.ofSeconds(50));
+    return driver;
+}
+    
 
     private static List<SystemConfig> loadConfig() {
         Path path = Path.of(CONFIG_PATH);
