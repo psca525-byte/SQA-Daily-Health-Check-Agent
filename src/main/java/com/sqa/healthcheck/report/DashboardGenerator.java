@@ -20,16 +20,17 @@ public class DashboardGenerator {
                 .withZoneSameInstant(PAKISTAN_ZONE)
                 .format(TIME_FORMAT);
     }
-
-    private String getPerformanceBadge(long responseTimeMillis) {
-        double seconds = responseTimeMillis / 1000.0;
-        if (seconds < 10) {
-            return "<span class=\"perf perf-healthy\">\uD83D\uDFE2 Healthy</span>";
-        } else if (seconds <= 20) {
-            return "<span class=\"perf perf-slow\">\uD83D\uDFE1 Slow</span>";
-        } else {
-            return "<span class=\"perf perf-critical\">\uD83D\uDD34 Critical</span>";
-        }
+private String getPerformanceBadge(long responseTimeMillis) {
+    double seconds = responseTimeMillis / 1000.0;
+    if (seconds < 15) {
+        return "<span class=\"perf perf-healthy\">\uD83D\uDFE2 Healthy</span>";
+    } else if (seconds <= 35) {
+        return "<span class=\"perf perf-slow\">\uD83D\uDFE1 Slow</span>";
+    } else {
+        return "<span class=\"perf perf-critical\">\uD83D\uDD34 Critical</span>";
+    }
+}
+   
     }
 
     public void generate(List<CheckResult> results, String outputPath) throws IOException {
@@ -126,9 +127,9 @@ public class DashboardGenerator {
                   <footer>
                     <div style="margin-bottom: 6px;">
                       Performance criteria based on response time:
-                      <span class="perf perf-healthy" style="margin-left:6px;">\uD83D\uDFE2 Healthy (under 10s)</span>
-                      <span class="perf perf-slow" style="margin-left:10px;">\uD83D\uDFE1 Slow (10\u201320s)</span>
-                      <span class="perf perf-critical" style="margin-left:10px;">\uD83D\uDD34 Critical (over 20s)</span>
+                   <span class="perf perf-healthy" style="margin-left:6px;">\uD83D\uDFE2 Healthy (under 15s)</span>
+<span class="perf perf-slow" style="margin-left:10px;">\uD83D\uDFE1 Slow (15\u201335s)</span>
+<span class="perf perf-critical" style="margin-left:10px;">\uD83D\uDD34 Critical (over 35s)</span>
                     </div>
                     Generated automatically by the SQA Teams Health Check Agent
                   </footer>
