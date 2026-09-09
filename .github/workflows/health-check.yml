@@ -65,6 +65,8 @@ jobs:
           VWPS_PASSWORD: ${{ secrets.VWPS_PASSWORD }}
           PSP_USERNAME: ${{ secrets.PSP_USERNAME }}
           PSP_PASSWORD: ${{ secrets.PSP_PASSWORD }}
+          MB_USERNAME: ${{ secrets.MB_USERNAME }}
+          MB_PASSWORD: ${{ secrets.MB_PASSWORD }}
         run: |
           echo "Starting health checks with network error handling..."
           MAX_RETRIES=2
