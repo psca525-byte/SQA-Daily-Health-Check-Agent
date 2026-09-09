@@ -47,14 +47,39 @@ public class HealthCheckRunner {
         List<CheckResult> results = new ArrayList<>();
 
         for (SystemConfig system : systems) {
+            // Defensive null check
+            if (system == null) {
+                logger.error("Skipping null system config");
+                continue;
+            }
+            
             logger.info("Checking: {}", system.name);
-            WebDriver driver = createDriver();
+            WebDriver driver = null;
+            
             try {
+                driver = createDriver();
                 CheckResult result = checker.check(driver, system);
                 results.add(result);
                 logger.info("[{}] {} ({} ms)", system.name, result.status, result.responseTimeMillis);
+            } catch (Exception e) {
+                // Catch any unexpected errors during the check and log them gracefully
+                logger.error("Unexpected error while checking system '{}': {}", 
+                    system.name, e.getMessage(), e);
+                
+                // Still create a DOWN result so the dashboard reflects the failure
+                CheckResult failedResult = new CheckResult(system.name, system.url);
+                failedResult.status = CheckResult.Status.DOWN;
+                failedResult.failureReason = "Unexpected error: " + e.getClass().getSimpleName() + 
+                    (e.getMessage() != null ? " - " + e.getMessage() : "");
+                results.add(failedResult);
             } finally {
-                driver.quit();
+                if (driver != null) {
+                    try {
+                        driver.quit();
+                    } catch (Exception e) {
+                        logger.warn("Error closing WebDriver: {}", e.getMessage());
+                    }
+                }
             }
         }
 
@@ -72,19 +97,19 @@ public class HealthCheckRunner {
         
         System.exit(0);  // Always exit with success (health checks are monitoring, not tests)
     }
+
     private static WebDriver createDriver() {
-    ChromeOptions options = new ChromeOptions();
-    options.addArguments("--headless=new");
-    options.addArguments("--no-sandbox");
-    options.addArguments("--disable-dev-shm-usage");
-    options.addArguments("--window-size=1920,1080");
-    WebDriver driver = new ChromeDriver(options);
-    // Hard cap matching dev-agreed max response time (50s) - prevents
-    // a single hanging page from blocking the whole daily run
-    driver.manage().timeouts().pageLoadTimeout(java.time.Duration.ofSeconds(50));
-    return driver;
-}
-    
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--window-size=1920,1080");
+        WebDriver driver = new ChromeDriver(options);
+        // Hard cap matching dev-agreed max response time (50s) - prevents
+        // a single hanging page from blocking the whole daily run
+        driver.manage().timeouts().pageLoadTimeout(java.time.Duration.ofSeconds(50));
+        return driver;
+    }
 
     private static List<SystemConfig> loadConfig() {
         Path path = Path.of(CONFIG_PATH);
