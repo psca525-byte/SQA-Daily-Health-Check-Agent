@@ -20,13 +20,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Entry point. Reads config/systems.json, checks each system one by one
- * using a fresh browser session, and writes docs/index.html as the
- * shareable dashboard.
- *
- * Run with: mvn clean package && java -jar target/sqa-health-check-agent.jar
- */
 public class HealthCheckRunner {
 
     private static final Logger logger = LogManager.getLogger(HealthCheckRunner.class);
@@ -47,39 +40,14 @@ public class HealthCheckRunner {
         List<CheckResult> results = new ArrayList<>();
 
         for (SystemConfig system : systems) {
-            // Defensive null check
-            if (system == null) {
-                logger.error("Skipping null system config");
-                continue;
-            }
-            
             logger.info("Checking: {}", system.name);
-            WebDriver driver = null;
-            
+            WebDriver driver = createDriver();
             try {
-                driver = createDriver();
                 CheckResult result = checker.check(driver, system);
                 results.add(result);
                 logger.info("[{}] {} ({} ms)", system.name, result.status, result.responseTimeMillis);
-            } catch (Exception e) {
-                // Catch any unexpected errors during the check and log them gracefully
-                logger.error("Unexpected error while checking system '{}': {}", 
-                    system.name, e.getMessage(), e);
-                
-                // Still create a DOWN result so the dashboard reflects the failure
-                CheckResult failedResult = new CheckResult(system.name, system.url);
-                failedResult.status = CheckResult.Status.DOWN;
-                failedResult.failureReason = "Unexpected error: " + e.getClass().getSimpleName() + 
-                    (e.getMessage() != null ? " - " + e.getMessage() : "");
-                results.add(failedResult);
             } finally {
-                if (driver != null) {
-                    try {
-                        driver.quit();
-                    } catch (Exception e) {
-                        logger.warn("Error closing WebDriver: {}", e.getMessage());
-                    }
-                }
+                driver.quit();
             }
         }
 
@@ -93,9 +61,8 @@ public class HealthCheckRunner {
         long downCount = results.stream().filter(r -> r.status == CheckResult.Status.DOWN).count();
         if (downCount > 0) {
             logger.warn("{} out of {} systems are DOWN.", downCount, results.size());
+            System.exit(1);
         }
-        
-        System.exit(0);  // Always exit with success (health checks are monitoring, not tests)
     }
 
     private static WebDriver createDriver() {
@@ -105,9 +72,9 @@ public class HealthCheckRunner {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--window-size=1920,1080");
         WebDriver driver = new ChromeDriver(options);
-        // Hard cap matching dev-agreed max response time (50s) - prevents
+        // Hard cap matching dev-agreed max response time (100s) - prevents
         // a single hanging page from blocking the whole daily run
-        driver.manage().timeouts().pageLoadTimeout(java.time.Duration.ofSeconds(50));
+        driver.manage().timeouts().pageLoadTimeout(java.time.Duration.ofSeconds(100));
         return driver;
     }
 
