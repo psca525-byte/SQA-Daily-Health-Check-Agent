@@ -40,6 +40,8 @@ jobs:
           VCCS_PASSWORD: ${{ secrets.VCCS_PASSWORD }}
           MB_USERNAME: ${{ secrets.MB_USERNAME }}
           MB_PASSWORD: ${{ secrets.MB_PASSWORD }}
+          PSP_USERNAME: ${{ secrets.PSP_USERNAME }}
+          PSP_PASSWORD: ${{ secrets.PSP_PASSWORD }}
         run: java -jar target/sqa-health-check-agent.jar
         continue-on-error: true
 
