@@ -20,16 +20,18 @@ public class DashboardGenerator {
                 .withZoneSameInstant(PAKISTAN_ZONE)
                 .format(TIME_FORMAT);
     }
-private String getPerformanceBadge(long responseTimeMillis) {
-    double seconds = responseTimeMillis / 1000.0;
-    if (seconds < 15) {
-        return "<span class=\"perf perf-healthy\">\uD83D\uDFE2 Healthy</span>";
-    } else if (seconds <= 35) {
-        return "<span class=\"perf perf-slow\">\uD83D\uDFE1 Slow</span>";
-    } else {
-        return "<span class=\"perf perf-critical\">\uD83D\uDD34 Critical</span>";
+
+    private String getPerformanceBadge(long responseTimeMillis) {
+        double seconds = responseTimeMillis / 1000.0;
+        if (seconds < 20) {
+            return "<span class=\"perf perf-healthy\">\uD83D\uDFE2 Healthy</span>";
+        } else if (seconds <= 60) {
+            return "<span class=\"perf perf-slow\">\uD83D\uDFE1 Slow</span>";
+        } else {
+            return "<span class=\"perf perf-critical\">\uD83D\uDD34 Critical</span>";
+        }
     }
-}
+
     public void generate(List<CheckResult> results, String outputPath) throws IOException {
         long upCount = results.stream().filter(r -> r.status == CheckResult.Status.UP).count();
         long downCount = results.size() - upCount;
@@ -51,7 +53,7 @@ private String getPerformanceBadge(long responseTimeMillis) {
             }
 
             rows.append("<tr>")
-                    .append("<td>").append(escape(r.name)).append("</td>")
+                    .append("<td><strong>").append(escape(r.name)).append("</strong></td>")
                     .append("<td><span class=\"badge ").append(isUp ? "badge-up" : "badge-down").append("\">")
                     .append(isUp ? "UP" : "DOWN").append("</span></td>")
                     .append("<td>").append(r.responseTimeMillis).append(" ms</td>")
@@ -124,11 +126,11 @@ private String getPerformanceBadge(long responseTimeMillis) {
                   <footer>
                     <div style="margin-bottom: 6px;">
                       Performance criteria based on response time:
-                   <span class="perf perf-healthy" style="margin-left:6px;">\uD83D\uDFE2 Healthy (under 15s)</span>
-                    <span class="perf perf-slow" style="margin-left:10px;">\uD83D\uDFE1 Slow (15\u201335s)</span>
-                    <span class="perf perf-critical" style="margin-left:10px;">\uD83D\uDD34 Critical (over 35s)</span>
+                      <span class="perf perf-healthy" style="margin-left:6px;">\uD83D\uDFE2 Healthy (under 20s)</span>
+                      <span class="perf perf-slow" style="margin-left:10px;">\uD83D\uDFE1 Slow (20\u201360s)</span>
+                      <span class="perf perf-critical" style="margin-left:10px;">\uD83D\uDD34 Critical (over 60s)</span>
                     </div>
-                    Generated automatically by the SQA Teams Health Check Agent
+                    Generated automatically by the SQA Health Check Agent
                   </footer>
                 </div>
                 </body>
