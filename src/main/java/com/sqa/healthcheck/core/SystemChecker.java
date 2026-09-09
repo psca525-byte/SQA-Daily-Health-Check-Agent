@@ -136,6 +136,13 @@ public class SystemChecker {
             By by = LocatorParser.parse(popupCloseLocator);
             WebElement closeButton = shortWait.until(ExpectedConditions.elementToBeClickable(by));
             closeButton.click();
+            logger.info("Popup close button clicked, waiting for it to disappear...");
+
+            try {
+                shortWait.until(ExpectedConditions.invisibilityOf(closeButton));
+            } catch (Exception ignored) {
+                Thread.sleep(1500);
+            }
             logger.info("Popup closed successfully");
         } catch (Exception e) {
             logger.info("No popup found to close (or it didn't appear in time) - continuing");
