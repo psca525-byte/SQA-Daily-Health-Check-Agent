@@ -60,9 +60,8 @@ public class SystemChecker {
             logger.warn("[{}] DOWN - timeout", config.name);
         } catch (Exception e) {
             result.status = CheckResult.Status.DOWN;
-            result.failureReason = "Unexpected error: " + e.getClass().getSimpleName()
-                    + (e.getMessage() != null ? " - " + e.getMessage() : "");
-            logger.error("[{}] DOWN - unexpected error", config.name, e);
+            result.failureReason = translateNetworkError(e);
+            logger.error("[{}] DOWN - {}", config.name, result.failureReason, e);
         } finally {
             result.screenshotBase64 = captureScreenshot(driver);
             result.responseTimeMillis = System.currentTimeMillis() - startTime;
@@ -97,10 +96,6 @@ public class SystemChecker {
                     "Login button not found (locator may be outdated)");
             submitButton.click();
 
-            // Step 4: verify a post-login element appears -> proves login actually succeeded
-            // Uses visibilityOfElementLocated (which retries/polls until timeout)
-            // instead of a single findElement() snapshot, so slow-loading dashboards
-            // get the full timeout to appear rather than failing instantly.
             try {
                 By successBy = LocatorParser.parse(config.successLocator);
                 wait.until(ExpectedConditions.visibilityOfElementLocated(successBy));
@@ -123,15 +118,40 @@ public class SystemChecker {
             logger.warn("[{}] DOWN - timeout", config.name);
         } catch (Exception e) {
             result.status = CheckResult.Status.DOWN;
-            result.failureReason = "Unexpected error: " + e.getClass().getSimpleName()
-                    + (e.getMessage() != null ? " - " + e.getMessage() : "");
-            logger.error("[{}] DOWN - unexpected error", config.name, e);
+            result.failureReason = translateNetworkError(e);
+            logger.error("[{}] DOWN - {}", config.name, result.failureReason, e);
         } finally {
             result.screenshotBase64 = captureScreenshot(driver);
             result.responseTimeMillis = System.currentTimeMillis() - startTime;
         }
 
         return result;
+    }
+
+    /**
+     * Converts raw Selenium/browser network error text into a short,
+     * plain-language message for non-technical dashboard viewers.
+     * Falls back to a generic message (not the full stack trace) for
+     * anything not specifically recognized.
+     */
+    private String translateNetworkError(Exception e) {
+        String raw = e.getMessage() != null ? e.getMessage() : "";
+
+        if (raw.contains("ERR_NAME_NOT_RESOLVED")) {
+            return "This portal can't be reached via external network.";
+        }
+        if (raw.contains("ERR_CONNECTION_RESET")) {
+            return "Connection was reset by the server - this may be a temporary network issue "
+                    + "or the portal blocking automated access.";
+        }
+        if (raw.contains("ERR_CONNECTION_TIMED_OUT")) {
+            return "Connection timed out while trying to reach the portal.";
+        }
+        if (raw.contains("ERR_CONNECTION_REFUSED")) {
+            return "Connection was refused - the portal may be down or blocking this request.";
+        }
+
+        return "Unexpected error occurred while checking this system: " + e.getClass().getSimpleName();
     }
 
     private void closePopupIfPresent(WebDriver driver, String popupCloseLocator) {
