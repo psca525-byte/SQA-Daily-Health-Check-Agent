@@ -19,7 +19,7 @@ import java.util.Base64;
 public class SystemChecker {
 
     private static final Logger logger = LogManager.getLogger(SystemChecker.class);
-    private static final int WAIT_SECONDS = 45;
+    private static final int WAIT_SECONDS = 50;
 
     public CheckResult check(WebDriver driver, SystemConfig config) {
         if ("PING".equalsIgnoreCase(config.checkType)) {
