@@ -19,7 +19,7 @@ import java.util.Base64;
 public class SystemChecker {
 
     private static final Logger logger = LogManager.getLogger(SystemChecker.class);
-    private static final int WAIT_SECONDS = 50;
+    private static final int WAIT_SECONDS = 100;
 
     public CheckResult check(WebDriver driver, SystemConfig config) {
         if ("PING".equalsIgnoreCase(config.checkType)) {
@@ -97,9 +97,13 @@ public class SystemChecker {
                     "Login button not found (locator may be outdated)");
             submitButton.click();
 
+            // Step 4: verify a post-login element appears -> proves login actually succeeded
+            // Uses visibilityOfElementLocated (which retries/polls until timeout)
+            // instead of a single findElement() snapshot, so slow-loading dashboards
+            // get the full timeout to appear rather than failing instantly.
             try {
-                wait.until(ExpectedConditions.visibilityOf(
-                        driver.findElement(LocatorParser.parse(config.successLocator))));
+                By successBy = LocatorParser.parse(config.successLocator);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(successBy));
             } catch (Exception e) {
                 throw new CheckFailedException(
                         "Login submitted but expected post-login element did not appear "
