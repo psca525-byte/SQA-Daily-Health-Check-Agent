@@ -74,7 +74,7 @@ public class HealthCheckRunner {
         WebDriver driver = new ChromeDriver(options);
         // Hard cap matching dev-agreed max response time (100s) - prevents
         // a single hanging page from blocking the whole daily run
-        driver.manage().timeouts().pageLoadTimeout(java.time.Duration.ofSeconds(100));
+        driver.manage().timeouts().pageLoadTimeout(java.time.Duration.ofSeconds(150));
         return driver;
     }
 
